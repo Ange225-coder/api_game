@@ -9,3 +9,9 @@
 
 controllers:
     resource: routing.controllers
+
+api_login:
+    path: '/api/login'
+
+api_admin_login:
+    path: '/api/admin/login'

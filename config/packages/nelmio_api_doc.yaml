@@ -1,0 +1,76 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: API Game # à changer
+            description: Une API juste pour s'exercer ! # à changer
+            version: 2.0.0
+        paths:
+            /api/login:
+                post:
+                    operationId: postCredentialsItem # doit être unique dans le cas ou on a différents firewall d'authentification
+                    tags:
+                        - Token
+                    summary: Permet d'obtenir le token JWT pour se logger.
+                    requestBody:
+                        description: Crée un nouveau token JWT
+                        content:
+                            application/json:
+                                schema:
+                                    $ref: '#/components/schemas/Credentials'
+                    responses:
+                        '200':
+                            description: Récupère le token JWT
+                            content:
+                                application/json:
+                                    schema:
+                                        $ref: '#/components/schemas/Token'
+
+            # admin token config
+            /api/admin/login:
+                post:
+                    operationId: postAdminCredentialsItem # doit être unique dans le cas ou on a différents firewall d'authentification
+                    tags:
+                        - Token Admin
+                    summary: Permet d'obtenir le token d'administration JWT pour se logger.
+                    requestBody:
+                        description: Crée un nouveau token admin JWT
+                        content:
+                            application/json:
+                                schema:
+                                    $ref: '#/components/schemas/Credentials'
+                    responses:
+                        '200':
+                            description: Récupère le token admin JWT
+                            content:
+                                application/json:
+                                    schema:
+                                        $ref: '#/components/schemas/Token'
+
+
+        components:
+            schemas:
+                Token:
+                    type: object
+                    properties:
+                        token:
+                            type: string
+                            readOnly: true
+                Credentials:
+                    type: object
+                    properties:
+                        username:
+                            type: string
+#                            default: admin@bookapi.com #ne dois pas être affiché
+                        password:
+                            type: string
+#                            default: password #ne dois pas être affiché
+            securitySchemes:
+                bearerAuth:
+                    type: apiKey
+                    in: header
+                    name: Authorization # or another header name
+        security:
+            - bearerAuth: []
+    areas: # to filter documented areas
+        path_patterns:
+            - ^/api(?!/doc$) # Accepts routes under /api except /api/doc
